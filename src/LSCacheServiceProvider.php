@@ -25,12 +25,10 @@ class LSCacheServiceProvider extends ServiceProvider
      */
     public function boot(Router $router, Kernel $kernel)
     {
-        $router->aliasMiddleware('lscache', LSCacheMiddleware::class);
-        $router->aliasMiddleware('lstags', LSTagsMiddleware::class);
-        $kernel->pushMiddleware(LSCacheMiddleware::class);
-
-        $this->publishes([
-            __DIR__ . '/../config/lscache.php' => config_path('lscache.php'),
-        ], 'config');
+        if(config('lscache.enabled')) {
+            $router->pushMiddlewareToGroup('website', LSCacheMiddleware::class);
+            $router->aliasMiddleware('lscache', LSCacheMiddleware::class);
+            $router->aliasMiddleware('lstags', LSTagsMiddleware::class);
+        }
     }
 }

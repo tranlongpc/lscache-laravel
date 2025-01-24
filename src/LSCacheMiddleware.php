@@ -19,7 +19,6 @@ class LSCacheMiddleware
     public function handle($request, Closure $next, string $lscache_control = null)
     {
         $response = $next($request);
-
         if (!in_array($request->getMethod(), ['GET', 'HEAD']) || !$response->getContent()) {
             return $response;
         }
